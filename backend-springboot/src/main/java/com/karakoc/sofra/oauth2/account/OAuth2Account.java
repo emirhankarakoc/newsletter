@@ -16,5 +16,5 @@ public class OAuth2Account {
     private String name;
     private String picture;
     private Boolean verified_email;
-    private String gmailAccessToken;
+    private String access_token;
 }

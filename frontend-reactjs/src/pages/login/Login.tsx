@@ -39,9 +39,9 @@ export default function Login() {
       });
 
       const jwt = response.data.accessToken;
-      const userId = response.data.id;
+      const role = response.data.role;
       localStorage.setItem("jwtToken", jwt);
-      localStorage.setItem("userId", userId);
+      localStorage.setItem("role", role);
 
       setMessage({ message: "Login successful!", color: "green" });
 
@@ -120,6 +120,17 @@ export default function Login() {
           id="alttaki-response-yeri"
         >
           {message?.message}
+        </div>
+        <div>
+          <a className="text-blue-800 hover:text-blue-950" href="/register">
+            Don't have an account?
+          </a>
+        </div>
+
+        <div>
+          <a className="text-blue-800 hover:text-blue-950" href="/">
+            Return to Homepage
+          </a>
         </div>
       </div>
     </div>

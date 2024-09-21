@@ -3,12 +3,8 @@ import axios from "axios";
 const LOCALHOST = "http://localhost:8080";
 export const APIURL = LOCALHOST;
 
-export const MECHANIC_ICON =
-  "http://res.cloudinary.com/dhoj5fmxr/image/upload/v1720876201/fnka2afsx52vo2pq1104.png";
-
-export const USER_ICON =
-  "http://res.cloudinary.com/dhoj5fmxr/image/upload/v1720876251/djrw8bqfmwsxx43g61ui.png";
-
+const baseUrl = "http://localhost:5173";
+export const CLIENTURL = baseUrl;
 const token = localStorage.getItem("jwtToken");
 
 export const http = axios.create({
@@ -17,11 +13,16 @@ export const http = axios.create({
   headers: token ? { Authorization: "Bearer " + token } : {},
 });
 
-export const httpError = (error: any) => {
-  let errorMessage = error.message;
-
-  if (error.response) {
-    errorMessage = error.response.data;
+export const httpError = (error: unknown) => {
+  if (!axios.isAxiosError(error)) {
+    return "Unknown error occured.";
   }
+
+  if (!error.response) {
+    return "Connection error.";
+  }
+
+  const errorMessage = error.response.data.message as string;
+
   return errorMessage;
 };

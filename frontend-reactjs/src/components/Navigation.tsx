@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 
 export default function Navigation() {
   const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const handleToken = () => {
@@ -18,11 +19,25 @@ export default function Navigation() {
         setLoggedIn(true);
       }
     };
+
+    const handleIsAdmin = () => {
+      const role = localStorage.getItem("role");
+      console.log(role);
+
+      if (role === "ROLE_ADMIN") {
+        setIsAdmin(true);
+      } else {
+        setIsAdmin(false);
+      }
+    };
+
+    handleIsAdmin();
     handleToken();
   }, [isLoggedIn]);
 
   const handleLogOut = () => {
     localStorage.removeItem("jwtToken");
+    localStorage.removeItem("role");
     setLoggedIn(false);
     window.location.href = "/";
   };
@@ -36,25 +51,39 @@ export default function Navigation() {
             window.location.href = "/";
           }}
         >
-          ACME
+          e-NEWSLETTER
         </button>
       </NavbarBrand>
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link to="#" className="text-foreground">
-            Features
+          <Link to="/" className="text-foreground">
+            Home
           </Link>
         </NavbarItem>
         <NavbarItem isActive>
-          <Link to="#" aria-current="page">
-            Customers
+          <Link to="/help" aria-current="page">
+            Help
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link to="#" className="text-foreground">
-            Integrations
+          <Link to="/faq" className="text-foreground">
+            FAQ
           </Link>
         </NavbarItem>
+        {isAdmin && (
+          <NavbarItem isActive>
+            <Link to="/dashboard/admin" className="text-foreground">
+              Dashboard
+            </Link>
+          </NavbarItem>
+        )}
+        {!isAdmin && (
+          <NavbarItem isActive>
+            <Link to="/dashboard" className="text-foreground">
+              Dashboard
+            </Link>
+          </NavbarItem>
+        )}
       </NavbarContent>
       {!isLoggedIn && (
         <NavbarContent justify="end">

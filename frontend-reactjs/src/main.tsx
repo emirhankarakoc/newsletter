@@ -6,6 +6,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google"; // Google OAuth k√ºt√
 import App from "./App.tsx";
 import { Provider } from "./provider.tsx";
 import "@/styles/globals.css";
+import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -13,6 +14,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Provider>
           <App />
+          <Toaster richColors />
         </Provider>
       </BrowserRouter>
     </GoogleOAuthProvider>

@@ -1,0 +1,121 @@
+import { http, httpError } from "@/assets/http";
+import Footer from "@/components/Footer";
+import Navigation from "@/components/Navigation";
+import { Button, Input } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+
+export const CreateNewsletter = () => {
+  const [isLoading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    image: null as string | null,
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setLoading(true);
+    e.preventDefault();
+    const form = new FormData(e.currentTarget);
+    console.log(form);
+
+    try {
+      await http.post("/newsletters", form);
+    } catch (err) {
+      httpError(err);
+    }
+
+    setLoading(false);
+    // Burada formu API'ye yollayabilirsiniz
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]; // Kullanıcı tarafından seçilen ilk dosya
+    if (file) {
+      const imageUrl = URL.createObjectURL(file); // Seçilen resmin URL'sini oluşturuyoruz
+      setFormData((prevData) => ({ ...prevData, image: imageUrl })); // Resmi state'e kaydediyoruz
+    }
+  };
+
+  return (
+    <div>
+      <Navigation />
+
+      <div className="grid grid-cols-2 p-10">
+        <div className="col-span-1">
+          <form id="1" onSubmit={handleSubmit}>
+            <h1 className="text-3xl font-bold font-sfpro">
+              Create a newsletter
+            </h1>
+            <Input
+              className="my-5"
+              isRequired
+              label="Newsletter name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange} // İsmi her değiştiğinde sağ tarafta gösterecek
+            />
+
+            <Input
+              className="my-5"
+              isRequired
+              label="Description"
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange} // Açıklama her değiştiğinde sağ tarafta gösterecek
+            />
+
+            <Input
+              className="my-5"
+              label="Choose newsletter image"
+              name="file"
+              isRequired
+              type="file"
+              onChange={handleImageChange} // Resim seçildiğinde handleImageChange çalışacak
+            />
+          </form>
+        </div>
+        <div className="col-span-1 p-10 bg-neutral-200 rounded-3xl mx-10">
+          <h1></h1>
+          {/* İsim ve açıklama burada anında gösterilecek */}
+          <h1 className="text-2xl font-bold font-sfpro">
+            {formData.name ? formData.name : "Newsletter name"}
+          </h1>
+
+          {/* Resim önizleme */}
+          {formData.image && (
+            <div className="my-5">
+              <img
+                src={formData.image}
+                alt="Selected Preview"
+                className="w-40 h-40 object-cover"
+              />
+            </div>
+          )}
+
+          {/* Açıklama */}
+          <p className="my-10 font-bold">
+            {formData.description
+              ? formData.description
+              : "Açıklama burada gözükecek"}
+          </p>
+          <Button
+            isLoading={isLoading}
+            color="success"
+            fullWidth
+            form="1"
+            type="submit"
+          >
+            Create
+          </Button>
+        </div>
+      </div>
+
+      <Footer />
+    </div>
+  );
+};

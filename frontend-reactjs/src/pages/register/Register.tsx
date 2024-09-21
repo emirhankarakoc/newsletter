@@ -142,6 +142,17 @@ export default function Register() {
         >
           {message?.message}
         </div>
+        <div>
+          <a className="text-blue-800 hover:text-blue-950" href="/login">
+            Already have an account?
+          </a>
+        </div>
+
+        <div>
+          <a className="text-blue-800 hover:text-blue-950" href="/">
+            Return to Homepage
+          </a>
+        </div>
       </div>
     </div>
   );

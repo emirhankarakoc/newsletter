@@ -7,11 +7,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface NewsletterService {
-    Newsletter createProject(String ownerUserId, String name);
+    Newsletter createProject(String ownerUserId, CreateNewsletterRequest r) throws IOException;
 
     List<Newsletter> getMyProjects(String ownerUserId);
     ResponseEntity sendMessageToSubscribers(String userId,String newsletterId, SendMailRequest r);
+    NewsletterManager.NewsletterResponse getNewsletterById(String id);
 }

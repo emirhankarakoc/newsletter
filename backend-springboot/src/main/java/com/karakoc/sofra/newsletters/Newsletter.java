@@ -1,11 +1,9 @@
 package com.karakoc.sofra.newsletters;
 
 
+import com.karakoc.sofra.cloudinary.entity.Image;
 import com.karakoc.sofra.customers.Customer;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
@@ -17,6 +15,9 @@ public class Newsletter {
     private String id;
     private String name;
     private String ownerUserId;
+    private String description;
+    private String imageUrl;
+    private String imageId;
     @OneToMany
     @JoinColumn(name = "customerId")
     private List<Customer> customers;

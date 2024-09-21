@@ -55,6 +55,7 @@ public class AuthManager implements AuthService{
            var token = tokenManager.issue(principal.getUserId(), principal.getEmail(), roles);
            return LoginResponse.builder()
                    .accessToken(token)
+                   .role(roles.get(0))
                    .build();
        }
        catch (Exception e){

@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,7 +84,7 @@ public class UserManager implements UserService{
     public UserDTO assignGmailTokenToUser(String userId, String accesstoken, OAuth2Response user1) {
         User user = repository.findById(userId).orElseThrow(()-> new NotfoundException(messages.getUSER_NOT_FOUND_404()));
         OAuth2Account gmailAcc = user.getOauth2();
-        gmailAcc.setGmailAccessToken(accesstoken);
+        gmailAcc.setAccess_token(accesstoken);
         gmailAcc.setGmailId(user1.getId());
         gmailAcc.setName(user1.getName());
         gmailAcc.setEmail(user1.getEmail());
