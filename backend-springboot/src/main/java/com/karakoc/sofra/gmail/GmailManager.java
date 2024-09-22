@@ -11,14 +11,18 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import javax.mail.Multipart;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.Properties;
 
 @Service
-public class GmailManager implements GmailService{
+public class GmailManager implements GmailService {
+
     private static final String APPLICATION_NAME = "newsletter-service";
     private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
 
@@ -32,7 +36,7 @@ public class GmailManager implements GmailService{
     }
 
     // Kullanıcı adına e-posta gönderme
-    public void sendEmail(String accessToken, String to, String subject, String bodyText) {
+    public void sendEmail(String accessToken, String to, String subject, String htmlContent) {
         try {
             // Gmail servisini başlat
             Gmail service = getGmailService(accessToken);
@@ -40,8 +44,8 @@ public class GmailManager implements GmailService{
             // Kullanıcı email'ini al
             String userEmail = getUserEmailFromToken(service);
 
-            // E-posta mesajını oluştur
-            MimeMessage email = createEmail(to, userEmail, subject, bodyText);
+            // E-posta mesajını oluştur (HTML formatında)
+            MimeMessage email = createHtmlEmail(to, userEmail, subject, htmlContent);
 
             // E-postayı gönder
             sendMessage(service, "me", email);
@@ -50,8 +54,8 @@ public class GmailManager implements GmailService{
         }
     }
 
-    // E-posta oluşturma fonksiyonu
-    private MimeMessage createEmail(String to, String from, String subject, String bodyText) throws MessagingException {
+    // HTML formatında e-posta oluşturma fonksiyonu
+    private MimeMessage createHtmlEmail(String to, String from, String subject, String htmlContent) throws MessagingException {
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
 
@@ -59,18 +63,27 @@ public class GmailManager implements GmailService{
         email.setFrom(new InternetAddress(from));
         email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
         email.setSubject(subject);
-        email.setText(bodyText);
+
+        // E-posta gövdesine HTML içeriğini ekle
+        MimeBodyPart mimeBodyPart = new MimeBodyPart();
+        mimeBodyPart.setContent(htmlContent, "text/html; charset=utf-8");
+
+        // Multipart yapı
+        Multipart multipart = new MimeMultipart();
+        multipart.addBodyPart(mimeBodyPart);
+
+        email.setContent(multipart);
 
         return email;
     }
 
-    // E-postayı Gmail API ile gönder
+    // E-postayı Gmail API ile gönderme fonksiyonu
     private void sendMessage(Gmail service, String userId, MimeMessage email) throws MessagingException, IOException {
         Message message = createMessageWithEmail(email);
         service.users().messages().send(userId, message).execute();
     }
 
-    // E-posta mesajını Gmail API'ye uygun formata dönüştür
+    // E-posta mesajını Gmail API'ye uygun formata dönüştürme fonksiyonu
     private Message createMessageWithEmail(MimeMessage email) throws MessagingException, IOException {
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         email.writeTo(buffer);

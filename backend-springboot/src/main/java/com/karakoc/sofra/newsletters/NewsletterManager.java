@@ -77,37 +77,51 @@ public class NewsletterManager implements NewsletterService {
     }
 
     @Override
-    public ResponseEntity sendMessageToSubscribers(String userId, String newsletterId, SendMailRequest r) {
-        Newsletter newsletter = newsletterRepository.findById(newsletterId).orElseThrow(()->new NotfoundException("Newsletter not found."));
-        User user = userRepository.findById(userId).orElseThrow(()-> new NotfoundException("User not found."));
-        if (user.getOauth2().getAccess_token().isEmpty()){
-            throw  new BadRequestException("You must connect your gmail account.");
-        }
+    public ResponseEntity sendMessageToSubscribers(String userId, String newsletterId, String accessToken2,String subject2,String htmlContent2) {
+        Newsletter newsletter = validateNewsletter(newsletterId);
+        User user = validateUser(userId);
+        validateUserAccessToken(user);
 
         int sentMailCounter = 0;
+        List<String> failedEmails = new ArrayList<>();
 
         if (newsletter.getOwnerUserId().equals(user.getId())) {
-
             String accessToken = user.getOauth2().getAccess_token();
             List<Customer> subscribers = newsletter.getCustomers();
-            for (Customer customer : subscribers) {
-                try{
-                    gmailService.sendEmail(accessToken,customer.getEmail(),r.getSubject(),r.getBodyText());
-                    sentMailCounter++;
 
-                }
-                catch (Exception e){
-                    throw new BadRequestException("Mail sending failed. Error: "+e.getMessage());
+            for (Customer customer : subscribers) {
+                try {
+                    gmailService.sendEmail(accessToken, customer.getEmail(), subject2, htmlContent2);
+                    sentMailCounter++;
+                } catch (Exception e) {
+                    failedEmails.add(customer.getEmail());
                 }
             }
-
-
-        }
-        else{
+        } else {
             throw new ForbiddenException("Forbidden.");
         }
 
-        return ResponseEntity.ok(sentMailCounter + " mails sent successfully!");
+        SendMailResponse response = new SendMailResponse();
+        response.setSuccessCount(sentMailCounter);
+        response.setFailedEmails(failedEmails);
+
+        return ResponseEntity.ok(response);
+    }
+
+    private void validateUserAccessToken(User user) {
+        if (user.getOauth2() == null || user.getOauth2().getAccess_token().isEmpty()) {
+            throw new BadRequestException("You must connect your Gmail account.");
+        }
+    }
+
+    private Newsletter validateNewsletter(String newsletterId) {
+        return newsletterRepository.findById(newsletterId)
+                .orElseThrow(() -> new NotfoundException("Newsletter not found."));
+    }
+
+    private User validateUser(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NotfoundException("User not found."));
     }
 
     public record NewsletterResponse(String id, String name, String description, String imageUrl) {}

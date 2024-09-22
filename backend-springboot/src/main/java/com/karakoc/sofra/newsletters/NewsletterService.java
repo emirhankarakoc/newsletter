@@ -14,6 +14,6 @@ public interface NewsletterService {
     Newsletter createProject(String ownerUserId, CreateNewsletterRequest r) throws IOException;
 
     List<Newsletter> getMyProjects(String ownerUserId);
-    ResponseEntity sendMessageToSubscribers(String userId,String newsletterId, SendMailRequest r);
+    ResponseEntity sendMessageToSubscribers(String userId,String newsletterId, String accessToken,String subject,String htmlContent) throws IOException;
     NewsletterManager.NewsletterResponse getNewsletterById(String id);
 }
