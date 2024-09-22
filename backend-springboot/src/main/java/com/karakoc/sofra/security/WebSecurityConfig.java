@@ -25,9 +25,11 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final CustomUserDetailService customUserDetailService;
+    private final RequestLoggingFilter requestLoggingFilter; // Log filtreyi ekliyoruz
 
     @Bean
     public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
+        http.addFilterBefore(requestLoggingFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http
