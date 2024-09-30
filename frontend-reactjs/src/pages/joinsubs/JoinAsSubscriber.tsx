@@ -69,7 +69,11 @@ export const JoinAsSubscriber = () => {
     <div className="grid place-items-center  h-screen bg-black">
       <div className=" text-white  border-3 border-green-300 p-10">
         <h1 className="text-3xl font-bold font-sfpro">{newsletter?.name}</h1>
-        <img className="mx-auto my-10" src={newsletter?.imageUrl} alt="resim" />
+        <img
+          className="mx-auto my-10 w-56 h-56"
+          src={newsletter?.imageUrl}
+          alt="resim"
+        />
         <p className="text-xl font-bold font-sfpro">
           {newsletter?.description}
         </p>

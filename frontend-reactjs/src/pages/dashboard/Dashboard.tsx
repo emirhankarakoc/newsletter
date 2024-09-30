@@ -122,87 +122,101 @@ export default function Dashboard() {
             </div>
           )}
         </div>
-        <div className="col-span-3 border-3 border-pink-400 p-5">
-          <h1 className="text-3xl font-bold font-sfpro">Dashboard</h1>
-          <Accordion>
-            <AccordionItem key="1" aria-label="Newsletters" title="Newsletters">
-              <a href="/dashboard/newsletters/create">
-                <Button fullWidth color="success">
-                  Create new one!
-                </Button>
-              </a>
-              {newsletters?.map((newsletter, index) => (
-                <div
-                  key={index}
-                  className="grid grid-cols-12 my-3 bg-gray-200 rounded-3xl p-5"
-                >
-                  <img
-                    className="col-span-2 w-20 h-20"
-                    src={newsletter.imageUrl}
-                    alt="newsletter thumbnail"
-                  />
-                  <div className="col-span-2 grid place-items-center font-bold font-sfpro">
-                    {newsletter.name}
-                  </div>
-                  <div className="col-span-2 grid place-items-center font-bold font-sfpro">
-                    {newsletter.customers.length} kisi
-                  </div>
-                  <div className="col-span-6 flex flex-row items-center justify-center gap-10">
-                    <a href="#">
-                      <Button color="success" title="Send Mail">
-                        <i className="fa-solid fa-plus"></i>
+        {user?.userStatus === "GOOGLE_VERIFICATED" ? (
+          <div className="col-span-3 border-3 border-pink-400 p-5">
+            <h1 className="text-3xl font-bold font-sfpro">Dashboard</h1>
+            <Accordion>
+              <AccordionItem
+                key="1"
+                aria-label="Newsletters"
+                title="Newsletters"
+              >
+                <a href="/dashboard/newsletters/create">
+                  <Button fullWidth color="success">
+                    Create new one!
+                  </Button>
+                </a>
+                {newsletters?.map((newsletter, index) => (
+                  <div
+                    key={index}
+                    className="grid grid-cols-12 my-3 bg-gray-200 rounded-3xl p-5"
+                  >
+                    <img
+                      className="col-span-2 w-20 h-20"
+                      src={newsletter.imageUrl}
+                      alt="newsletter thumbnail"
+                    />
+                    <div className="col-span-2 grid place-items-center font-bold font-sfpro">
+                      {newsletter.name}
+                    </div>
+                    <div className="col-span-2 grid place-items-center font-bold font-sfpro">
+                      {newsletter.customers.length} members
+                    </div>
+                    <div className="col-span-6 flex flex-row items-center justify-center gap-10">
+                      <a href="#">
+                        <Button color="success" title="Send Mail">
+                          <i className="fa-solid fa-plus"></i>
+                        </Button>
+                      </a>
+
+                      <Button
+                        color="secondary"
+                        title="Copy sharing link"
+                        onClick={() => {
+                          const shareUrl = `${CLIENTURL}/join/${newsletter.id}`;
+                          navigator.clipboard
+                            .writeText(shareUrl)
+                            .then(() => {
+                              console.log(
+                                "URL copied to clipboard: ",
+                                shareUrl
+                              );
+                              toast.success("URL copied to clipboard.");
+                            })
+                            .catch((err) => {
+                              console.error("Failed to copy the URL: ", err);
+                            });
+                        }}
+                      >
+                        <i className="fa-solid fa-share-nodes"></i>
                       </Button>
-                    </a>
 
-                    <Button
-                      color="secondary"
-                      title="Copy sharing link"
-                      onClick={() => {
-                        const shareUrl = `${CLIENTURL}/join/${newsletter.id}`;
-                        navigator.clipboard
-                          .writeText(shareUrl)
-                          .then(() => {
-                            console.log("URL copied to clipboard: ", shareUrl);
-                            toast.success("URL copied to clipboard.");
-                          })
-                          .catch((err) => {
-                            console.error("Failed to copy the URL: ", err);
-                          });
-                      }}
-                    >
-                      <i className="fa-solid fa-share-nodes"></i>
-                    </Button>
-
-                    <Button
-                      color="primary"
-                      title="Subscribers"
-                      onClick={() => {
-                        console.log(
-                          "simdilik bos, ilerde urun sayfasina yonlendirecek."
-                        );
-                      }}
-                    >
-                      <i className="fa-solid fa-user"></i>
-                    </Button>
-                    <Button color="warning" title="Update">
-                      <i className="fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button color="danger" title="Don't click">
-                      <i className="fa-solid fa-trash-can"></i>
-                    </Button>
+                      <Button
+                        color="primary"
+                        title="Subscribers"
+                        onClick={() => {
+                          window.location.href = `/dashboard/newsletters/${newsletter.id}/subscribers`;
+                          console.log("");
+                        }}
+                      >
+                        <i className="fa-solid fa-user"></i>
+                      </Button>
+                      <Button color="warning" title="Update">
+                        <i className="fa-solid fa-pen-to-square"></i>
+                      </Button>
+                      <Button color="danger" title="Don't click">
+                        <i className="fa-solid fa-trash-can"></i>
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </AccordionItem>
-            <AccordionItem
-              key="2"
-              aria-label="burayi degistir"
-              title="burayi degistir"
-            >
-              <p>araba</p>
-            </AccordionItem>
-          </Accordion>
-        </div>
+                ))}
+              </AccordionItem>
+              <AccordionItem
+                key="2"
+                aria-label="burayi degistir"
+                title="burayi degistir"
+              >
+                <p>araba</p>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        ) : (
+          <div className="border-pink-300 border-5 grid place-items-center p-5">
+            <h1 className="font-bold font-sfpro text-3xl ">
+              Connect gmail account for use this website.
+            </h1>
+          </div>
+        )}
       </div>
 
       <Footer />

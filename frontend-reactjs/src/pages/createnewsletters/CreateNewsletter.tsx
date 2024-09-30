@@ -11,6 +11,7 @@ export const CreateNewsletter = () => {
     description: "",
     image: null as string | null,
   });
+  const [newsletter, setNewsletter] = useState<Newsletter>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     setLoading(true);
@@ -19,7 +20,8 @@ export const CreateNewsletter = () => {
     console.log(form);
 
     try {
-      await http.post("/newsletters", form);
+      const response = await http.post("/newsletters", form);
+      setNewsletter(response.data);
     } catch (err) {
       httpError(err);
     }
@@ -79,6 +81,8 @@ export const CreateNewsletter = () => {
             />
           </form>
         </div>
+
+        {/* sag taraf */}
         <div className="col-span-1 p-10 bg-neutral-200 rounded-3xl mx-10">
           <h1></h1>
           {/* İsim ve açıklama burada anında gösterilecek */}
@@ -112,6 +116,22 @@ export const CreateNewsletter = () => {
           >
             Create
           </Button>
+          {isLoading === true && (
+            <div className="grid place-items-center">
+              Please wait while loading.
+            </div>
+          )}
+          {newsletter && (
+            <div className="border-green-400 border-3 p-5 m-5 rounded-3xl">
+              <p>Newsletter created successfully!</p>
+              <a
+                className="text-blue-900 hover:text-blue-600"
+                href={`/newsletters/${newsletter.id}`}
+              >
+                Click here for see
+              </a>
+            </div>
+          )}
         </div>
       </div>
 

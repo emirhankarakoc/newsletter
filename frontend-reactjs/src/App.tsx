@@ -6,6 +6,7 @@ import Page from "./pages/landing/Page";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { CreateNewsletter } from "./pages/createnewsletters/CreateNewsletter";
 import { JoinAsSubscriber } from "./pages/joinsubs/JoinAsSubscriber";
+import { Subscribers } from "./pages/subscribers/Subscribers";
 function App() {
   return (
     <Routes>
@@ -14,6 +15,11 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route
+        path="/dashboard/newsletters/:newsletterId/subscribers"
+        element={<Subscribers />}
+      />
+
       <Route
         path="/dashboard/newsletters/create"
         element={<CreateNewsletter />}
