@@ -32,6 +32,7 @@ export const JoinAsSubscriber = () => {
     value.match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    setErrorMessage("");
     setLoading(true);
     e.preventDefault();
 
@@ -67,7 +68,7 @@ export const JoinAsSubscriber = () => {
 
   return (
     <div className="grid place-items-center  h-screen bg-black">
-      <div className=" text-white  border-3 border-green-300 p-10">
+      <div className=" text-white border-3 border-green-300 p-10">
         <h1 className="text-3xl font-bold font-sfpro">{newsletter?.name}</h1>
         <img
           className="mx-auto my-10 w-56 h-56"

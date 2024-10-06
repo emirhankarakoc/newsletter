@@ -7,6 +7,7 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import { CreateNewsletter } from "./pages/createnewsletters/CreateNewsletter";
 import { JoinAsSubscriber } from "./pages/joinsubs/JoinAsSubscriber";
 import { Subscribers } from "./pages/subscribers/Subscribers";
+import { UpdateNewsletterAndSubscribers } from "./pages/update-newsletter/UpdateNewsletterAndSubscribers";
 function App() {
   return (
     <Routes>
@@ -26,6 +27,10 @@ function App() {
       />
 
       <Route path="/join/:newsletterId" element={<JoinAsSubscriber />} />
+      <Route
+        path="/update/:newsletterId"
+        element={<UpdateNewsletterAndSubscribers />}
+      />
     </Routes>
   );
 }

@@ -125,7 +125,7 @@ export default function Dashboard() {
         {user?.userStatus === "GOOGLE_VERIFICATED" ? (
           <div className="col-span-3 border-3 border-pink-400 p-5">
             <h1 className="text-3xl font-bold font-sfpro">Dashboard</h1>
-            <Accordion>
+            <Accordion defaultExpandedKeys={["1"]}>
               <AccordionItem
                 key="1"
                 aria-label="Newsletters"
@@ -191,7 +191,13 @@ export default function Dashboard() {
                       >
                         <i className="fa-solid fa-user"></i>
                       </Button>
-                      <Button color="warning" title="Update">
+                      <Button
+                        color="warning"
+                        title="Update"
+                        onClick={() => {
+                          window.location.href = "/update/" + newsletter.id;
+                        }}
+                      >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </Button>
                       <Button color="danger" title="Don't click">

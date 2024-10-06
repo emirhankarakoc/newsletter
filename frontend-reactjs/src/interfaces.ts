@@ -32,4 +32,5 @@ interface Customer {
   id: string;
   name: string;
   email: string;
+  registerDate: string;
 }

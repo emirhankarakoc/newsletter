@@ -64,7 +64,11 @@ export const Subscribers = () => {
       setResponseMessage("Customer deleted successfully.");
       deleteModal.onOpenChange(); // Modalı kapat
     } catch (err) {
-      setResponseMessage("Customer couldn't be deleted.");
+      updateModal.onOpenChange(); // Modalı kapat
+
+      setResponseMessage(
+        "Customer couldn't be deleted. Message: " + httpError(err)
+      );
       httpError(err);
     } finally {
       setTimeout(() => setResponseMessage(""), 3000); // 3 saniye sonra mesajı temizle
@@ -88,70 +92,49 @@ export const Subscribers = () => {
       setSubs(updatedSubs);
       updateModal.onOpenChange(); // Modalı kapat
     } catch (err) {
-      setResponseMessage("Customer couldn't be updated.");
+      console.log(httpError(err));
+
+      updateModal.onOpenChange(); // Modalı kapat
+
+      setResponseMessage(
+        "Customer couldn't be updated. Message: " + httpError(err)
+      );
       httpError(err);
     } finally {
       setTimeout(() => setResponseMessage(""), 3000); // 3 saniye sonra mesajı temizle
     }
   };
 
+  const handleRegisteredDate = (date: string) => {
+    let tarihVeSaat = date.split("T");
+    console.log(tarihVeSaat[1].substring(0, 5)); // 19:25 mesela
+    console.log(tarihVeSaat[0].substring(0, 10)); //2024 - 10-06 mesela
+    let response =
+      tarihVeSaat[1].substring(0, 5) + " " + tarihVeSaat[0].substring(0, 10);
+    return response;
+  };
   return (
     <div>
       <Navigation />
       <div className="grid grid-cols-4 px-24 min-h-[600px]">
-        {/* newsletter bilgileri */}
-        <div className="col-span-1 border-green-300 border-3 p-10">
-          <div className="flex flex-col">
-            <img src={newsletter?.imageUrl} alt="newsletters image" />
-            <div className="flex justify-between">
-              <h2 className="text-2xl font-sfpro font-bold">
-                {newsletter?.name}
-              </h2>
-              <h2 className="text-2xl font-sfpro font-bold">
-                <i className="fa-regular fa-user fa-sm"></i>
-                {" " + subs?.length}
-              </h2>
-            </div>
-            <p>{newsletter?.description}</p>
-          </div>
-        </div>
         {/* musteriler tablosu */}
-        <div className="col-span-3 p-10">
+        <div className="col-span-4 p-10">
           <Table>
             <TableHeader>
               <TableColumn>Name</TableColumn>
               <TableColumn>Email</TableColumn>
-              <TableColumn>Update</TableColumn>
-              <TableColumn>Delete</TableColumn>
+              <TableColumn>Registered Date</TableColumn>
             </TableHeader>
             <TableBody>
               {subs?.map((sub, index) => (
                 <TableRow key={index}>
                   <TableCell>{sub.name}</TableCell>
                   <TableCell>{sub.email}</TableCell>
+
                   <TableCell>
-                    <Button
-                      color="warning"
-                      onPress={() => {
-                        setSelectedSub(sub);
-                        setNewName(sub.name);
-                        setNewEmail(sub.email);
-                        updateModal.onOpen();
-                      }}
-                    >
-                      <i className="fa-regular fa-pen-to-square"></i>
-                    </Button>
-                  </TableCell>
-                  <TableCell>
-                    <Button
-                      color="danger"
-                      onPress={() => {
-                        setSelectedSub(sub);
-                        deleteModal.onOpen();
-                      }}
-                    >
-                      <i className="fa-solid fa-trash"></i>
-                    </Button>
+                    {sub.registerDate
+                      ? handleRegisteredDate(sub.registerDate)
+                      : "Bir problem var, tarih yok."}
                   </TableCell>
                 </TableRow>
               ))}
