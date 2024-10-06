@@ -153,7 +153,7 @@ export default function Dashboard() {
                       {newsletter.customers.length} members
                     </div>
                     <div className="col-span-6 flex flex-row items-center justify-center gap-10">
-                      <a href="#">
+                      <a href={`/sendmail/${newsletter.id}`}>
                         <Button color="success" title="Send Mail">
                           <i className="fa-solid fa-plus"></i>
                         </Button>
@@ -186,7 +186,6 @@ export default function Dashboard() {
                         title="Subscribers"
                         onClick={() => {
                           window.location.href = `/dashboard/newsletters/${newsletter.id}/subscribers`;
-                          console.log("");
                         }}
                       >
                         <i className="fa-solid fa-user"></i>
@@ -200,20 +199,15 @@ export default function Dashboard() {
                       >
                         <i className="fa-solid fa-pen-to-square"></i>
                       </Button>
-                      <Button color="danger" title="Don't click">
-                        <i className="fa-solid fa-trash-can"></i>
-                      </Button>
                     </div>
                   </div>
                 ))}
               </AccordionItem>
               <AccordionItem
                 key="2"
-                aria-label="burayi degistir"
-                title="burayi degistir"
-              >
-                <p>araba</p>
-              </AccordionItem>
+                aria-label="Mail"
+                title="Mail Previews"
+              ></AccordionItem>
             </Accordion>
           </div>
         ) : (
