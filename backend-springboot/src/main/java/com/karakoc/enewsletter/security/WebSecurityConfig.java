@@ -58,7 +58,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/newsletters/**").hasAnyRole("ADMIN", "USER")
                         .requestMatchers("/customers/**").permitAll()
-                                .requestMatchers("/emails/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/mailpreviews/**").hasAnyRole("USER","ADMIN")
+                        .requestMatchers("/emails/**").hasAnyRole("USER","ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().authenticated()
                 );

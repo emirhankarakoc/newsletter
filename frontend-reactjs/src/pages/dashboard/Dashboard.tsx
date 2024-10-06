@@ -5,7 +5,7 @@ import Navigation from "@/components/Navigation"; // Eğer Navigation bileşenin
 import { Button } from "@nextui-org/button";
 import Footer from "@/components/Footer";
 import axios from "axios";
-import { Accordion, AccordionItem } from "@nextui-org/react";
+import { Accordion, AccordionItem, Card } from "@nextui-org/react";
 import { toast, Toaster } from "sonner";
 
 export default function Dashboard() {
@@ -13,6 +13,7 @@ export default function Dashboard() {
   const [user, setUser] = useState<User>(); // loggedUser olarak state kullanıyorsunuz
   const [isLoading, setLoading] = useState<boolean>(false);
   const [newsletters, setNewsletters] = useState<Newsletter[]>();
+  const [mailPreviews, setMailPreviews] = useState<MailPreview[]>();
 
   useEffect(() => {
     const handleGetMe = async () => {
@@ -32,7 +33,15 @@ export default function Dashboard() {
         httpError(err);
       }
     };
-
+    const handleGetMailPreviews = async () => {
+      try {
+        const response = await http.get(`/mailpreviews/my`);
+        setMailPreviews(response.data);
+      } catch (error) {
+        console.log(httpError(error));
+      }
+    };
+    handleGetMailPreviews();
     handleGetNewsletters();
     handleGetMe();
   }, []);
@@ -203,11 +212,16 @@ export default function Dashboard() {
                   </div>
                 ))}
               </AccordionItem>
-              <AccordionItem
-                key="2"
-                aria-label="Mail"
-                title="Mail Previews"
-              ></AccordionItem>
+              <AccordionItem key="2" aria-label="Mail" title="Mail Previews">
+                <a href="/create-mail">
+                  <Button color="success" fullWidth>
+                    Create a new one
+                  </Button>
+                </a>
+                {mailPreviews?.map((preview, index) => (
+                  <div key={index}>{preview.name}</div>
+                ))}
+              </AccordionItem>
             </Accordion>
           </div>
         ) : (

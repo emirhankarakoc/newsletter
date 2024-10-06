@@ -14,7 +14,7 @@ public class MailPreview {
     private String name;
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
-    private String htmlContent;
+//    private byte[] htmlContent;  // BLOB olarak tutmak için byte[] kullanıyoruz
     private String ownerId;
 
 }

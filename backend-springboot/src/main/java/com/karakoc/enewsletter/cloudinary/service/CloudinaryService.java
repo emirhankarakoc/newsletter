@@ -19,10 +19,6 @@ import java.util.Objects;
 public class CloudinaryService {
     private final Cloudinary cloudinary;
 
-
-
-
-
     public CloudinaryService() {
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("cloud_name", "dhoj5fmxr");
@@ -31,6 +27,9 @@ public class CloudinaryService {
         cloudinary = new Cloudinary(valuesMap);
     }
 
+    public void aVoid(){
+        cloudinary.url().publicId("asd");
+    }
 
     public Map<String, String> upload(MultipartFile multipartFile) throws IOException {
         File file = convert(multipartFile);

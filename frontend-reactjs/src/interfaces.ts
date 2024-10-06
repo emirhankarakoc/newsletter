@@ -34,3 +34,12 @@ interface Customer {
   email: string;
   registerDate: string;
 }
+
+interface MailPreview {
+  id: string;
+  name: string;
+  createdDate: string;
+  updatedDate: string;
+  htmlContent: string;
+  ownerId: string;
+}

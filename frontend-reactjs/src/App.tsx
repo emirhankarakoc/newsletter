@@ -8,7 +8,7 @@ import { CreateNewsletter } from "./pages/createnewsletters/CreateNewsletter";
 import { JoinAsSubscriber } from "./pages/joinsubs/JoinAsSubscriber";
 import { Subscribers } from "./pages/subscribers/Subscribers";
 import { UpdateNewsletterAndSubscribers } from "./pages/update-newsletter/UpdateNewsletterAndSubscribers";
-import { CreateMail } from "./pages/sendmailpage/SendMailPage";
+import { CreateAndSendMail } from "./pages/sendmailpage/CreateAndSendMail";
 function App() {
   return (
     <Routes>
@@ -32,7 +32,7 @@ function App() {
         path="/update/:newsletterId"
         element={<UpdateNewsletterAndSubscribers />}
       />
-      <Route path="/sendmail/:newsletterId" element={<CreateMail />} />
+      <Route path="/sendmail/:newsletterId" element={<CreateAndSendMail />} />
     </Routes>
   );
 }

@@ -42,9 +42,11 @@ private final NewsletterService newsletterService;
     }
     @PostMapping( value = "/{id}/sendMessage",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity sendMessageToSubscribers(@AuthenticationPrincipal UserPrincipal principal, @PathVariable String id, @ModelAttribute SendMailRequest r) throws IOException {
-        // Dosyanın içeriğini oku
         String htmlContent;
         try {
+            if (r.getHtmlFile().isEmpty()){
+                throw new BadRequestException("Missing file");
+            }
             htmlContent = new String(r.getHtmlFile().getBytes());
 
 
@@ -53,7 +55,7 @@ private final NewsletterService newsletterService;
         }
 
         // Mail gönderme işlemi
-        return newsletterService.sendMessageToSubscribers(principal.getUserId(), id, r.getAccessToken(),r.getSubject(),htmlContent);
+        return newsletterService.sendMessageToSubscribers(principal.getUserId(), id,r.getSubject(),htmlContent);
     }
     }
 

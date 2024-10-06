@@ -10,6 +10,6 @@ public interface NewsletterService {
     Newsletter updateNewsletterBasics(String loggedUserId, String newsletterId, UpdateNewsletterNameAndDescriptionRequest r) throws IOException;
     Newsletter updateNewsletterImage(String loggedUserId, String newsletterId, UpdateNewsletterImageRequest r) throws IOException;
     List<Newsletter> getMyProjects(String ownerUserId);
-    ResponseEntity sendMessageToSubscribers(String userId,String newsletterId, String accessToken,String subject,String htmlContent) throws IOException;
+    ResponseEntity sendMessageToSubscribers(String userId,String newsletterId,String subject,String htmlContent) throws IOException;
     NewsletterManager.NewsletterResponse getNewsletterById(String id);
 }

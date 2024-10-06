@@ -125,7 +125,7 @@ public class NewsletterManager implements NewsletterService {
     }
 
     @Override
-    public ResponseEntity sendMessageToSubscribers(String userId, String newsletterId, String accessToken2,String subject2,String htmlContent2) {
+    public ResponseEntity sendMessageToSubscribers(String userId, String newsletterId,String subject2,String htmlContent2) {
         Newsletter newsletter = validateNewsletter(newsletterId);
         User user = validateUser(userId);
         validateUserAccessToken(user);

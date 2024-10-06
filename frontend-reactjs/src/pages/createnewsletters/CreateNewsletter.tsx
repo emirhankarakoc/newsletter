@@ -46,7 +46,10 @@ export const CreateNewsletter = () => {
   return (
     <div>
       <Navigation />
-
+      <p>
+        Welcome. You need to use external HTML code editor for testing this
+        code.
+      </p>
       <div className="grid grid-cols-2 p-10">
         <div className="col-span-1">
           <form id="1" onSubmit={handleSubmit}>
