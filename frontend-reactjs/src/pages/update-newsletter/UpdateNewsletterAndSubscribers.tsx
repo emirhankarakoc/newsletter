@@ -169,7 +169,7 @@ export const UpdateNewsletterAndSubscribers = () => {
             <img
               src={newsletter?.imageUrl}
               alt="newsletter image"
-              className="h-[450px] w-[450px]"
+              className="mx-auto h-[450px] w-[450px]"
             />
             <h1 className="font-bold font-sfpro text-xl px-5">Description</h1>
             <p className="font-sfpro p-5">{newsletter?.description}</p>
