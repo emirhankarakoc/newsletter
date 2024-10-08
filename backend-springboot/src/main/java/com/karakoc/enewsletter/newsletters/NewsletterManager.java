@@ -139,7 +139,7 @@ public class NewsletterManager implements NewsletterService {
 
             for (Customer customer : subscribers) {
                 try {
-                    gmailService.sendEmail(accessToken, customer.getEmail(), subject2, htmlContent2);
+                    gmailService.sendEmail(accessToken, customer, subject2, htmlContent2);
                     sentMailCounter++;
                 } catch (Exception e) {
                     failedEmails.add(customer.getEmail());

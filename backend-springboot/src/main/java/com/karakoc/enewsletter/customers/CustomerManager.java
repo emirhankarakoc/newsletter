@@ -96,4 +96,15 @@ public class CustomerManager implements CustomerService{
 
     }
 
+    @Override
+    public void unsubscribe(String customerId, String newsletterId) {
+        Customer customer = customerRepository.findById(customerId).orElseThrow(()->new NotfoundException("Customer not found."));
+        if (!customer.getNewsletterId().equals(newsletterId)){
+            throw new ForbiddenException("Forbidden !!!");
+        }
+        Newsletter newsletter = newsletterRepository.findById(newsletterId).orElseThrow(()->new NotfoundException("Newsletter not found."));
+        newsletter.getCustomers().remove(customer);
+        newsletterRepository.save(newsletter);
+    }
+
 }

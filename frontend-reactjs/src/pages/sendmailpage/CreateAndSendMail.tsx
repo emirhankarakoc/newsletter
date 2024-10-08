@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
-import { Button } from "@nextui-org/react";
-import { http } from "@/assets/http";
+import { Accordion, AccordionItem, Button } from "@nextui-org/react";
+import { APIURL, http } from "@/assets/http";
 import { useParams } from "react-router-dom";
 
 export const CreateAndSendMail = () => {
@@ -29,7 +29,7 @@ export const CreateAndSendMail = () => {
                 <img
                   src="http://res.cloudinary.com/dhoj5fmxr/image/upload/v1727015216/cmah2y1cigd1kmaqjpb5.jpg"
                   alt="200x200 resim"
-                  style="display: block"
+                  style="display: block; width: 200px; height: 200px;"
                 />
               </td>
             </tr>
@@ -76,9 +76,62 @@ export const CreateAndSendMail = () => {
   return (
     <div>
       <Navigation />
-      <p className="text-center p-5 border-pink-300 border-3">
-        Welcome. You need to use external HTML code editor for test this code.
-      </p>
+      <div className="p-5 border-pink-400 border-3">
+        <Accordion>
+          <AccordionItem
+            name="Help"
+            aria-label="Help"
+            key="1"
+            title="Mail sending guide"
+          >
+            <p className="text-center">
+              Welcome.
+              <br />
+              <strong>
+                You should use external HTML code editor for test this code for
+                better results
+              </strong>
+              <br />
+              Each user's name, email address and unsubscribe link are
+              different. If you want to customize them:
+              <br />
+              For user name:
+              <strong>ELECTRONICNEWSLETTERSERVICE_USERNAME</strong>
+              <br />
+              For user email:
+              <strong>ELECTRONICNEWSLETTERSERVICE_USERMAIL</strong>
+              <br />
+              For user id for unsub:
+              <strong>ELECTRONICNEWSLETTER_USERID</strong>
+              <br />
+              For newsletter id for unsub:
+              <strong>ELECTRONICNEWSLETTER_NEWSLETTERID</strong>
+              <br />
+              For newsletter's thumbnail url:
+              <strong>ELECTRONICNEWSLETTER_NEWSLETTERIMAGE</strong>
+              <br />
+              For newsletters subscriber count:
+              <strong>ELECTRONICNEWSLETTER_NEWSLETTERCUSTOMER_COUNT</strong>
+              <br />
+              For newsletters description:
+              <strong>ELECTRONICNEWSLETTER_NEWSLETTERDESCRIPTION</strong>
+              <div>
+                <h1 className="text-xl font-sfpro">Unsubscribe Guide</h1>
+                <p>
+                  you should put unsubscribe link inside anchor &#40;
+                  &lt;a&gt;&#41; tag
+                </p>
+                <p className="border-black p-2 border-1">
+                  {APIURL}
+                  /customers/ELECTRONICNEWSLETTER_USERID/newsletters/ELECTRONICNEWSLETTER_NEWSLETTERID/unsubscribe
+                </p>
+                <p>will enough... i think</p>
+              </div>
+            </p>
+          </AccordionItem>
+        </Accordion>
+      </div>
+
       <form onSubmit={handleSubmit} className="min-h-[650px] p-5">
         {/* Subject Input Field */}
         <div className="mb-4">

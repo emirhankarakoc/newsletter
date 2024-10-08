@@ -1,5 +1,6 @@
 package com.karakoc.enewsletter.newsletters;
 
+import com.karakoc.enewsletter.customers.CustomerService;
 import com.karakoc.enewsletter.exceptions.general.BadRequestException;
 import com.karakoc.enewsletter.gmail.SendMailRequest;
 import com.karakoc.enewsletter.security.UserPrincipal;
@@ -17,6 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class NewsletterController {
 private final NewsletterService newsletterService;
+private final CustomerService customerService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Newsletter postProject(@AuthenticationPrincipal UserPrincipal principal, @ModelAttribute CreateNewsletterRequest r) throws IOException {
@@ -57,6 +59,8 @@ private final NewsletterService newsletterService;
         // Mail gönderme işlemi
         return newsletterService.sendMessageToSubscribers(principal.getUserId(), id,r.getSubject(),htmlContent);
     }
+
+
     }
 
 

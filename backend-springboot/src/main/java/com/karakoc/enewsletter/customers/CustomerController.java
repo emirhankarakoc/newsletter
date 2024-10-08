@@ -15,8 +15,6 @@ import java.util.List;
 @RequestMapping("/customers")
 @AllArgsConstructor
 public class CustomerController {
-    private final NewsletterRepository newsletterRepository;
-    private final CustomerRepository customerRepository;
     private final CustomerService customerService;
 
     @PostMapping("/newsletters/{newsletterId}")
@@ -39,5 +37,11 @@ public class CustomerController {
     @PutMapping("/{userId}")
     public Customer updateCustomer(@AuthenticationPrincipal UserPrincipal principal, @PathVariable String userId, @RequestBody UpdateCustomerRequest r){
         return customerService.updateCustomer(principal.getUserId(),userId,r);
+    }
+
+    @GetMapping("/{customerId}/newsletters/{newsletterId}/unsubscribe")
+    public String unsubscribe(@PathVariable String customerId,@PathVariable String newsletterId){
+        customerService.unsubscribe(customerId,newsletterId);
+        return "Unsubscribe successfully.";
     }
 }

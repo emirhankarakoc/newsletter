@@ -6,6 +6,11 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
+import com.karakoc.enewsletter.customers.Customer;
+import com.karakoc.enewsletter.exceptions.general.NotfoundException;
+import com.karakoc.enewsletter.newsletters.Newsletter;
+import com.karakoc.enewsletter.newsletters.NewsletterRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -21,7 +26,9 @@ import java.util.Base64;
 import java.util.Properties;
 
 @Service
+@AllArgsConstructor
 public class GmailManager implements GmailService {
+    private final NewsletterRepository newsletterRepository;
 
     private static final String APPLICATION_NAME = "newsletter-service";
     private static final GsonFactory JSON_FACTORY = GsonFactory.getDefaultInstance();
@@ -36,16 +43,27 @@ public class GmailManager implements GmailService {
     }
 
     // Kullanıcı adına e-posta gönderme
-    public void sendEmail(String accessToken, String to, String subject, String htmlContent) {
+    public void sendEmail(String accessToken, Customer customer, String subject, String htmlContent) {
         try {
+            Newsletter news = newsletterRepository.findById(customer.getNewsletterId()).orElseThrow(()->new NotfoundException("Newsletter not found. But this error message shouldn't saw"));
             // Gmail servisini başlat
             Gmail service = getGmailService(accessToken);
 
             // Kullanıcı email'ini al
             String userEmail = getUserEmailFromToken(service);
 
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTERSERVICE_USERNAME", customer.getName());
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTERSERVICE_USERMAIL", customer.getEmail());
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTER_USERID",customer.getId());
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTER_NEWSLETTERIMAGE",news.getImageUrl());
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTER_NEWSLETTERID",news.getId());
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTER_NEWSLETTERCUSTOMER_COUNT",news.getCustomers().size() + "");
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTER_NEWSLETTERID",news.getId());
+            htmlContent = htmlContent.replace("ELECTRONICNEWSLETTER_NEWSLETTERDESCRIPTION",news.getDescription());
+
+
             // E-posta mesajını oluştur (HTML formatında)
-            MimeMessage email = createHtmlEmail(to, userEmail, subject, htmlContent);
+            MimeMessage email = createHtmlEmail(customer.getEmail(), userEmail, subject, htmlContent);
 
             // E-postayı gönder
             sendMessage(service, "me", email);
